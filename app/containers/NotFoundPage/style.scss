@@ -1,0 +1,25 @@
+.page-error {
+  height: 100%;
+  width: 100%;
+  padding-top: 60px;
+  text-align: center;
+  display: table;
+
+  & .page-inner {
+    display: table-cell;
+    width: 100%;
+    vertical-align: middle;
+  }
+
+  & .page-description {
+    font-size: 18px;
+    font-weight: 400;
+    color: #34395e;
+  }
+
+  & h1 {
+    font-size: 10em;
+    font-weight: 700;
+    color: #6c757d;
+  }
+}
