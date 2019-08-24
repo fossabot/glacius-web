@@ -10,6 +10,9 @@ import { navigation } from '../../navigation';
 import Header from './Header';
 import Footer from './Footer';
 
+const propTypes = {
+  route: PropTypes.object
+};
 
 class Layout extends React.PureComponent {
   render() {
@@ -42,8 +45,6 @@ class Layout extends React.PureComponent {
   }
 }
 
-Layout.propTypes = {
-  route: PropTypes.object
-};
+Layout.propTypes = propTypes;
 
 export default Layout;

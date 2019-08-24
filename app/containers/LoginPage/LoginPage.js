@@ -4,42 +4,18 @@ import { Helmet } from 'react-helmet';
 import {
   Button, Card, CardBody, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row, FormFeedback
 } from 'reactstrap';
+import { Formik } from 'formik';
 
-class LoginPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  constructor(props) {
-    super(props);
-    this.state = { email: '', password: '' };
-  }
+const propTypes = {
+  login: PropTypes.func
+};
 
-  handleValueChange = (key, value) => {
-    const { resetError, error } = this.props;
-
-    this.setState({ [key]: value });
-
-    if (error) {
-      resetError();
-    }
-  };
-
-  handleSubmit = () => {
-    const { onSubmit } = this.props;
-    const { email, password } = this.state;
-
-    onSubmit(email, password);
-  };
-
-  handleKeyPress = (eventKey) => {
-    if (eventKey === 'Enter') {
-      this.handleSubmit();
-    }
-  };
-
+class LoginPage extends React.PureComponent {
   render() {
-    const { error } = this.props;
-    const { email, password } = this.state;
+    const { login } = this.props;
 
     return (
-      <div>
+      <>
         <Helmet>
           <title>Login</title>
         </Helmet>
@@ -52,61 +28,93 @@ class LoginPage extends React.PureComponent { // eslint-disable-line react/prefe
                   <CardBody>
                     <h1>Login</h1>
                     <p className="text-muted">Sign In to your account</p>
-                    <InputGroup className="mb-3">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="fa fa-envelope-o"></i>
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        autoFocus
-                        type="email"
-                        placeholder="Email"
-                        autoComplete="email"
-                        value={email}
-                        onChange={({ target: { value } }) => this.handleValueChange('email', value)}
-                      />
-                    </InputGroup>
-                    <InputGroup className="mb-4">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="icon-lock"></i>
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        type="password"
-                        placeholder="Password"
-                        autoComplete="current-password"
-                        value={password}
-                        onChange={({ target: { value } }) => this.handleValueChange('password', value)}
-                        onKeyPress={({ key }) => this.handleKeyPress(key)}
-                        invalid={!!error}
-                      />
-                      {error && <FormFeedback>{error}</FormFeedback>}
-                    </InputGroup>
-                    <Row>
-                      <Col xs="6">
-                        <Button color="primary" className="px-4" onClick={this.handleSubmit}>Login</Button>
-                      </Col>
-                      <Col xs="6" className="text-right">
-                        <Button color="link" className="px-0">Forgot password?</Button>
-                      </Col>
-                    </Row>
+
+                    <Formik
+                      initialValues={{ email: '', password: '' }}
+                      initialStatus={{ email: false, password: false }}
+                      onSubmit={login}
+                      validateOnBlur={false}
+                      validateOnChange={false}
+                    >
+                      {({
+                        values, status, handleChange, handleSubmit, isSubmitting, setStatus
+                      }) => (
+                        <>
+                          <InputGroup className="mb-3">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="fa fa-envelope-o" />
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input
+                              autoFocus
+                              type="email"
+                              name="email"
+                              placeholder="Email"
+                              autoComplete="email"
+                              value={values.email}
+                              onChange={(evt) => {
+                                setStatus({ ...status, email: false });
+                                handleChange(evt);
+                              }}
+                              invalid={!!status.email}
+                            />
+                            {status.email && <FormFeedback>{status.email}</FormFeedback>}
+                          </InputGroup>
+                          <InputGroup className="mb-4">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="icon-lock" />
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input
+                              type="password"
+                              name="password"
+                              placeholder="Password"
+                              autoComplete="current-password"
+                              value={values.password}
+                              onChange={(evt) => {
+                                setStatus({ ...status, password: false });
+                                handleChange(evt);
+                              }}
+                              onKeyPress={({ key }) => {
+                                if (key === 'Enter') {
+                                  handleSubmit();
+                                }
+                              }}
+                              invalid={!!status.password}
+                            />
+                            {status.password && <FormFeedback>{status.password}</FormFeedback>}
+                          </InputGroup>
+                          <Row>
+                            <Col xs="6">
+                              <Button
+                                color="primary"
+                                className="px-4"
+                                onClick={handleSubmit}
+                                disabled={isSubmitting}
+                              >Login
+                              </Button>
+                            </Col>
+                            <Col xs="6" className="text-right">
+                              <Button color="link" className="px-0">Forgot password?</Button>
+                            </Col>
+                          </Row>
+                        </>
+                      )}
+                    </Formik>
+
                   </CardBody>
                 </Card>
               </Col>
             </Row>
           </Container>
         </div>
-      </div>
+      </>
     );
   }
 }
 
-LoginPage.propTypes = {
-  onSubmit: PropTypes.func,
-  resetError: PropTypes.func,
-  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-};
+LoginPage.propTypes = propTypes;
 
 export default LoginPage;

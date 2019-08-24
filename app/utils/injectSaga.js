@@ -11,10 +11,6 @@ export default ({ key, saga, mode }) => (WrappedComponent) => {
   class InjectSaga extends React.Component {
     static WrappedComponent = WrappedComponent;
 
-    static contextType = ReactReduxContext;
-
-    static displayName = `withSaga(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
-
     injectors = getInjectors(this.context.store); // eslint-disable-line react/destructuring-assignment
 
     constructor(props, context) {
@@ -31,6 +27,9 @@ export default ({ key, saga, mode }) => (WrappedComponent) => {
       return <WrappedComponent {...this.props} />;
     }
   }
+
+  InjectSaga.contextType = ReactReduxContext;
+  InjectSaga.displayName = `withSaga(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
   return hoistNonReactStatics(InjectSaga, WrappedComponent);
 };

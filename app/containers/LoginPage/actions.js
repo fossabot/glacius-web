@@ -1,24 +1,9 @@
-import {
-  ATTEMPT_LOGIN, LOGIN_ERROR, RESET
-} from './constants';
+import { ATTEMPT_LOGIN } from './constants';
 
-export function attemptLogin(email, password) {
+export function attemptLogin(values, formActions) {
   return {
     type: ATTEMPT_LOGIN,
-    email,
-    password
-  };
-}
-
-export function loginError(error) {
-  return {
-    type: LOGIN_ERROR,
-    error
-  };
-}
-
-export function reset() {
-  return {
-    type: RESET
+    values,
+    formActions
   };
 }

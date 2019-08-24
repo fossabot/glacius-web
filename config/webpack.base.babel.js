@@ -1,7 +1,7 @@
 /**
  * COMMON WEBPACK CONFIGURATION
  */
-
+require('dotenv').config();
 const path = require('path');
 const webpack = require('webpack');
 
@@ -10,14 +10,12 @@ process.noDeprecation = true;
 module.exports = (options) => ({
   mode: options.mode,
   entry: options.entry,
-  output: Object.assign(
-    {
-      // Compile into js/build.js
-      path: path.resolve(process.cwd(), 'build'),
-      publicPath: '/'
-    },
-    options.output
-  ), // Merge with env dependent settings
+  output: {
+    // Compile into js/build.js
+    path: path.resolve(process.cwd(), 'build'),
+    publicPath: '/',
+    ...options.output
+  }, // Merge with env dependent settings
   module: {
     rules: [
       {
@@ -68,10 +66,8 @@ module.exports = (options) => ({
     // inside your code for any environment checks; UglifyJS will automatically
     // drop any unreachable code.
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-        SERVER_BASE_URL: JSON.stringify(process.env.SERVER_BASE_URL),
-      }
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.SERVER_BASE_URL': JSON.stringify(process.env.SERVER_BASE_URL)
     })
   ]),
   resolve: {

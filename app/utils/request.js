@@ -9,16 +9,18 @@ function processResponse(response) {
 function processError(error) {
   if (error.response) {
     if (error.response.status === 401) {
-      if (store.getState().router.location.pathname === '/login') {
-        store.dispatch(logoutUser(true));
-      } else {
+      if (store.getState().router.location.pathname !== '/login') {
         store.dispatch(logoutUser());
       }
     }
     throw error.response.data;
   }
 
-  throw error;
+  let newError;
+  newError.status = 400;
+  newError.msg = error.message;
+
+  throw newError;
 }
 
 export default function request(options) {

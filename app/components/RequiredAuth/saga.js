@@ -18,7 +18,7 @@ export function* loginUser(action) {
   yield put(storeToken(action.token));
 }
 
-export function* logoutUser(action) {
+export function* logoutUser() {
   yield put(resetGlobalState());
   removeAuthToken();
   delete axios.defaults.headers.common.Authorization;
@@ -35,7 +35,7 @@ export function* logoutUser(action) {
     }
   }
 
-  yield put(push(`/login${!action.doNotRtn && newPath ? `?rtn=${encodeURIComponent(newPath)}` : ''}`));
+  yield put(push(`/login${newPath ? `?rtn=${encodeURIComponent(newPath)}` : ''}`));
 }
 
 export function* checkAuth() {

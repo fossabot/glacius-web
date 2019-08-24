@@ -8,13 +8,33 @@ import PropTypes from 'prop-types';
 import logoImg from 'images/logo.png';
 import logoMinImg from 'images/logo_min.png';
 import avatarImg from 'images/avatar.png';
+import { ConfirmModal } from 'components/Modals';
+
+const propTypes = {
+  currentModule: PropTypes.string,
+  logout: PropTypes.func
+};
 
 class Header extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      logoutModalState: false
+    };
+  }
+
+  toggleLogoutModal = () => {
+    this.setState((prevState) => ({
+      logoutModalState: !prevState.logoutModalState
+    }));
+  };
+
   render() {
     const { currentModule, logout } = this.props;
+    const { logoutModalState } = this.state;
 
     return (
-      <React.Fragment>
+      <>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
         <NavLink className="navbar-brand" to="/portal">
           <img className="navbar-brand-full" src={logoImg} alt="Glacius Logo" width="89" height="25" />
@@ -35,20 +55,29 @@ class Header extends React.PureComponent {
             </DropdownToggle>
             <DropdownMenu right>
               <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
-              <DropdownItem><i className="fa fa-user"></i> Profile</DropdownItem>
-              <DropdownItem><i className="fa fa-wrench"></i> Settings</DropdownItem>
-              <DropdownItem onClick={logout}><i className="fa fa-lock"></i> Logout</DropdownItem>
+              <DropdownItem><i className="fa fa-user" /> Profile</DropdownItem>
+              <DropdownItem><i className="fa fa-wrench" /> Settings</DropdownItem>
+              <DropdownItem onClick={this.toggleLogoutModal}><i className="fa fa-lock" /> Logout</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>
-      </React.Fragment>
+
+        <ConfirmModal
+          title="Logout"
+          onConfirm={logout}
+          isOpen={logoutModalState}
+          toggle={this.toggleLogoutModal}
+          size="sm"
+          confirmBtnTxt="Logout"
+          cancelBtnTxt="Cancel"
+        >
+          You will be returned to the login screen.
+        </ConfirmModal>
+      </>
     );
   }
 }
 
-Header.propTypes = {
-  currentModule: PropTypes.string,
-  logout: PropTypes.func
-};
+Header.propTypes = propTypes;
 
 export default Header;

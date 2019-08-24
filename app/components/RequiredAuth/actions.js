@@ -24,9 +24,8 @@ export function loginUser(token) {
   };
 }
 
-export function logoutUser(doNotRtn = false) {
+export function logoutUser() {
   return {
-    type: LOGOUT_USER,
-    doNotRtn
+    type: LOGOUT_USER
   };
 }

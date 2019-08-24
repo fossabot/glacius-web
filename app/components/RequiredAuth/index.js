@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import injectSaga from 'utils/injectSaga';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { makeSelectToken, makeSelectUserProfile } from 'containers/App/selectors';
+import { makeSelectIsReady } from './selectors';
 import RequiredAuth from './RequiredAuth';
 import saga from './saga';
 import { checkAuth as checkAuthAction } from './actions';
@@ -12,8 +12,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = createStructuredSelector({
-  token: makeSelectToken(),
-  userProfile: makeSelectUserProfile()
+  isReady: makeSelectIsReady()
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

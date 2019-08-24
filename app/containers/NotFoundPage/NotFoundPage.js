@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import { Button, Container } from 'reactstrap';
 import './style.scss';
 
+const propTypes = {
+  navigateToHomePage: PropTypes.func
+};
+
 function NotFound({ navigateToHomePage }) {
   return (
     <Container className="mt-5">
@@ -21,8 +25,6 @@ function NotFound({ navigateToHomePage }) {
   );
 }
 
-NotFound.propTypes = {
-  navigateToHomePage: PropTypes.func
-};
+NotFound.propTypes = propTypes;
 
 export default NotFound;

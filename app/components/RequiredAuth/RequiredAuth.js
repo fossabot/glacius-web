@@ -2,6 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default (WrappedComponent, isAuthRequired) => {
+  const propTypes = {
+    checkAuth: PropTypes.func,
+    isReady: PropTypes.bool
+  };
+
   class RequiredAuth extends React.Component {
     componentDidMount() {
       const { checkAuth } = this.props;
@@ -12,11 +17,9 @@ export default (WrappedComponent, isAuthRequired) => {
     }
 
     render() {
-      const {
-        token, userProfile
-      } = this.props;
+      const { isReady } = this.props;
 
-      if (isAuthRequired && (!token || !userProfile)) {
+      if (isAuthRequired && !isReady) {
         return null;
       }
 
@@ -24,12 +27,7 @@ export default (WrappedComponent, isAuthRequired) => {
     }
   }
 
-  RequiredAuth.propTypes = {
-    checkAuth: PropTypes.func,
-    token: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    userProfile: PropTypes.oneOfType([PropTypes.object, PropTypes.bool])
-  };
-
+  RequiredAuth.propTypes = propTypes;
   RequiredAuth.displayName = `RequiredAuth(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
   return RequiredAuth;

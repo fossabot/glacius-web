@@ -5,6 +5,10 @@ import {
   Row, Col, Card, CardBody
 } from 'reactstrap';
 
+const propTypes = {
+  setModule: PropTypes.func
+};
+
 class DashboardPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
     const { setModule } = this.props;
@@ -57,8 +61,6 @@ class DashboardPage extends React.PureComponent { // eslint-disable-line react/p
   }
 }
 
-DashboardPage.propTypes = {
-  setModule: PropTypes.func
-};
+DashboardPage.propTypes = propTypes;
 
 export default DashboardPage;
