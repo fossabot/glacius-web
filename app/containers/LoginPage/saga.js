@@ -2,7 +2,7 @@ import {
   call, put, select, takeLatest
 } from 'redux-saga/effects';
 import request from 'utils/request';
-import { push } from 'connected-react-router';
+import { replace } from 'connected-react-router';
 import { loginUser } from 'components/RequiredAuth/actions';
 import { makeSelectLocationQueryString } from 'containers/App/selectors';
 import { forOwn } from 'lodash';
@@ -21,7 +21,7 @@ export function* attemptLogin(action) {
     yield put(loginUser(res.token));
 
     const params = yield select(makeSelectLocationQueryString());
-    yield put(push(params && params.rtn ? params.rtn : '/portal'));
+    yield put(replace(params && params.rtn ? params.rtn : '/portal'));
   } catch (err) {
     const { setStatus, setSubmitting } = action.formActions;
     setSubmitting(false);

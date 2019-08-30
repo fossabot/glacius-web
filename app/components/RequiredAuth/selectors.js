@@ -1,10 +1,11 @@
 import { createSelector } from 'reselect';
-import { makeSelectToken, makeSelectUserProfile } from 'containers/App/selectors';
+import { makeSelectToken, makeSelectUserProfile, makeSelectUserShop } from 'containers/App/selectors';
 
 const makeSelectIsReady = () => createSelector(
   makeSelectToken(),
   makeSelectUserProfile(),
-  (token, userProfile) => !!token && !!userProfile
+  makeSelectUserShop(),
+  (token, userProfile, userShop) => !!token && !!userProfile && !!userShop
 );
 
 export {

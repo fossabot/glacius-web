@@ -10,16 +10,19 @@ const defaultProps = {
   title: 'Info',
   confirmBtnTxt: 'Ok',
   closeOnConfirmClick: true,
-  onConfirm: () => {}
+  confirmBtnColor: 'primary',
+  onConfirm: () => {},
 };
 
 const propTypes = {
   title: PropTypes.string,
   confirmBtnTxt: PropTypes.string,
+  confirmBtnColor: PropTypes.string,
   closeOnConfirmClick: PropTypes.bool,
   toggle: PropTypes.func.isRequired,
   children: PropTypes.node,
   onConfirm: PropTypes.func,
+  bodyClassName: PropTypes.string
 };
 
 const propsToOmit = Object.keys(propTypes);
@@ -37,16 +40,16 @@ class BasicModal extends React.PureComponent {
 
   render() {
     const {
-      title, toggle, children, confirmBtnTxt
+      title, toggle, children, confirmBtnTxt, confirmBtnColor, bodyClassName
     } = this.props;
     const attributes = omit(this.props, propsToOmit);
 
     return (
       <Modal className="basic-modal" toggle={toggle} modalTransition={{ timeout: 150 }} {...attributes}>
         <ModalHeader toggle={toggle}>{title}</ModalHeader>
-        <ModalBody className="text-center">{children}</ModalBody>
+        <ModalBody className={bodyClassName}>{children}</ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.onConfirmClick}>{confirmBtnTxt}</Button>
+          <Button color={confirmBtnColor} onClick={this.onConfirmClick}>{confirmBtnTxt}</Button>
         </ModalFooter>
       </Modal>
     );

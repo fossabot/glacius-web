@@ -3,14 +3,16 @@ import {
 } from 'redux-saga/effects';
 
 import request from 'utils/request';
-import { storeUserProfile, reset as resetGlobalState, storeToken } from 'containers/App/actions';
-import { push } from 'connected-react-router';
+import {
+  storeUserProfile, storeUserShop, reset as resetGlobalState, storeToken
+} from 'containers/App/actions';
+import { replace } from 'connected-react-router';
 import { getAuthToken, removeAuthToken, saveAuthToken } from 'utils/localStorage';
 import axios from 'axios';
 import { makeSelectToken, makeSelectUserProfile, makeSelectLocation } from 'containers/App/selectors';
-import { loadUserProfile as loadUserProfileAction, logoutUser as logoutUserAction } from './actions';
+import { loadUserProfile as loadUserProfileAction, loadUserShop as loadUserShopAction, logoutUser as logoutUserAction } from './actions';
 import {
-  CHECK_AUTH, LOAD_USER_PROFILE, LOGIN_USER, LOGOUT_USER
+  CHECK_AUTH, LOAD_USER_PROFILE, LOAD_USER_SHOP, LOGIN_USER, LOGOUT_USER,
 } from './constants';
 
 export function* loginUser(action) {
@@ -35,7 +37,7 @@ export function* logoutUser() {
     }
   }
 
-  yield put(push(`/login${newPath ? `?rtn=${encodeURIComponent(newPath)}` : ''}`));
+  yield put(replace(`/login${newPath ? `?rtn=${encodeURIComponent(newPath)}` : ''}`));
 }
 
 export function* checkAuth() {
@@ -48,6 +50,7 @@ export function* checkAuth() {
       axios.defaults.headers.common.Authorization = `Bearer ${tokenFromLocalStorage}`;
       yield put(storeToken(tokenFromLocalStorage));
       yield put(loadUserProfileAction());
+      yield put(loadUserShopAction());
     } else {
       yield put(logoutUserAction());
     }
@@ -67,12 +70,26 @@ export function* loadUserProfile() {
   }
 }
 
+export function* loadUserShop() {
+  try {
+    const res = yield call(request, {
+      url: '/shop',
+      method: 'get'
+    });
+
+    yield put(storeUserShop(res[0]));
+  } catch (err) {
+    yield put(storeUserShop(false));
+  }
+}
+
 /**
  * Root saga manages watcher lifecycle
  */
 export default function* () {
   yield takeLatest(CHECK_AUTH, checkAuth);
   yield takeLatest(LOAD_USER_PROFILE, loadUserProfile);
+  yield takeLatest(LOAD_USER_SHOP, loadUserShop);
   yield takeLatest(LOGIN_USER, loginUser);
   yield takeLatest(LOGOUT_USER, logoutUser);
 }

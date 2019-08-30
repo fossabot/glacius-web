@@ -1,6 +1,7 @@
 import {
   STORE_TOKEN,
   STORE_USER_PROFILE,
+  STORE_USER_SHOP,
   RESET,
   SET_MODULE
 } from './constants';
@@ -16,6 +17,13 @@ export function storeUserProfile(userProfile) {
   return {
     type: STORE_USER_PROFILE,
     userProfile
+  };
+}
+
+export function storeUserShop(shop) {
+  return {
+    type: STORE_USER_SHOP,
+    shop
   };
 }
 

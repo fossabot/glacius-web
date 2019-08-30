@@ -32,7 +32,7 @@ class Layout extends React.PureComponent {
             <AppSidebarMinimizer />
           </AppSidebar>
           <main className="main">
-            <Container fluid className="pt-4">
+            <Container fluid className="pt-4 h-100">
               {renderRoutes(route.routes)}
             </Container>
           </main>

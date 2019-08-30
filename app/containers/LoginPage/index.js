@@ -6,7 +6,7 @@ import saga from './saga';
 import LoginPage from './LoginPage';
 
 const mapDispatchToProps = (dispatch) => ({
-  login: (email, password) => dispatch(attemptLogin(email, password)),
+  login: (values, formActions) => dispatch(attemptLogin(values, formActions)),
 });
 
 const withConnect = connect(null, mapDispatchToProps);

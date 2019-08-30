@@ -9,7 +9,9 @@ import './style.scss';
 const defaultProps = {
   title: 'Confirmation',
   confirmBtnTxt: 'Yes',
+  confirmBtnColor: 'primary',
   cancelBtnTxt: 'No',
+  cancelBtnColor: 'secondary',
   onCancel: () => {},
   closeOnConfirmClick: true,
   closeOnCancelClick: true,
@@ -18,13 +20,16 @@ const defaultProps = {
 const propTypes = {
   title: PropTypes.string,
   confirmBtnTxt: PropTypes.string,
+  confirmBtnColor: PropTypes.string,
   cancelBtnTxt: PropTypes.string,
+  cancelBtnColor: PropTypes.string,
   toggle: PropTypes.func.isRequired,
   children: PropTypes.node,
   onConfirm: PropTypes.func.isRequired,
   onCancel: PropTypes.func,
   closeOnConfirmClick: PropTypes.bool,
-  closeOnCancelClick: PropTypes.bool
+  closeOnCancelClick: PropTypes.bool,
+  bodyClassName: PropTypes.string
 };
 
 const propsToOmit = Object.keys(propTypes);
@@ -52,17 +57,17 @@ class ConfirmModal extends React.PureComponent {
 
   render() {
     const {
-      title, toggle, children, confirmBtnTxt, cancelBtnTxt
+      title, toggle, children, confirmBtnTxt, confirmBtnColor, cancelBtnTxt, cancelBtnColor, bodyClassName
     } = this.props;
     const attributes = omit(this.props, propsToOmit);
 
     return (
       <Modal className="confirm-modal" toggle={toggle} modalTransition={{ timeout: 150 }} {...attributes}>
         <ModalHeader toggle={toggle}>{title}</ModalHeader>
-        <ModalBody className="text-center">{children}</ModalBody>
+        <ModalBody className={bodyClassName}>{children}</ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.onConfirmClick}>{confirmBtnTxt}</Button>
-          <Button color="secondary" onClick={this.onCancelClick}>{cancelBtnTxt}</Button>
+          <Button color={cancelBtnColor} onClick={this.onCancelClick}>{cancelBtnTxt}</Button>
+          <Button color={confirmBtnColor} onClick={this.onConfirmClick}>{confirmBtnTxt}</Button>
         </ModalFooter>
       </Modal>
     );

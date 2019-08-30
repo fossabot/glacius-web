@@ -43,7 +43,7 @@ class LoginPage extends React.PureComponent {
                           <InputGroup className="mb-3">
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
-                                <i className="fa fa-envelope-o" />
+                                <i className="fas fa-envelope" />
                               </InputGroupText>
                             </InputGroupAddon>
                             <Input
@@ -64,7 +64,7 @@ class LoginPage extends React.PureComponent {
                           <InputGroup className="mb-4">
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
-                                <i className="icon-lock" />
+                                <i className="fas fa-lock" />
                               </InputGroupText>
                             </InputGroupAddon>
                             <Input

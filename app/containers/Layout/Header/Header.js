@@ -70,6 +70,8 @@ class Header extends React.PureComponent {
           size="sm"
           confirmBtnTxt="Logout"
           cancelBtnTxt="Cancel"
+          bodyClassName="text-center"
+          confirmBtnColor="danger"
         >
           You will be returned to the login screen.
         </ConfirmModal>

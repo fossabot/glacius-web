@@ -1,9 +1,9 @@
-import { push } from 'connected-react-router';
+import { replace } from 'connected-react-router';
 import { connect } from 'react-redux';
 import NotFoundPage from './NotFoundPage';
 
 const mapDispatchToProps = (dispatch) => ({
-  navigateToHomePage: () => dispatch(push('/portal'))
+  navigateToHomePage: () => dispatch(replace('/portal'))
 });
 
 export default connect(null, mapDispatchToProps)(NotFoundPage);

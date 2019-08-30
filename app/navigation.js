@@ -3,7 +3,12 @@ const navigation = {
     {
       name: 'Dashboard',
       url: '/portal/dashboard',
-      icon: 'icon-speedometer'
+      icon: 'fas fa-tachometer-alt'
+    },
+    {
+      name: 'Products',
+      url: '/portal/products',
+      icon: 'fas fa-boxes'
     }
   ]
 };

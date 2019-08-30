@@ -32,6 +32,11 @@ const makeSelectUserProfile = () => createSelector(
   (globalState) => globalState.userProfile
 );
 
+const makeSelectUserShop = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState.userShop
+);
+
 const makeSelectCurrentModule = () => createSelector(
   selectGlobal,
   (globalState) => globalState.currentModule
@@ -42,5 +47,6 @@ export {
   makeSelectLocationQueryString,
   makeSelectToken,
   makeSelectUserProfile,
+  makeSelectUserShop,
   makeSelectCurrentModule
 };

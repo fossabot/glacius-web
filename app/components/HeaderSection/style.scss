@@ -1,0 +1,12 @@
+.header-section {
+  z-index: 1020;
+  padding-top: 7px;
+
+  & .header-section-title {
+    margin-top: 3px;
+  }
+
+  & .header-section-action {
+    margin-top: 3px;
+  }
+}
