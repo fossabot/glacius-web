@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { store } from 'configureStore';
-import { logoutUser } from 'components/RequiredAuth/actions';
+import { logoutUser } from 'hoc/withAuth/actions';
 
 function processResponse(response) {
   return response.data;
@@ -16,11 +16,19 @@ function processError(error) {
     throw error.response.data;
   }
 
-  let newError;
+  const newError = {};
   newError.status = 400;
   newError.msg = error.message;
 
   throw newError;
+}
+
+export function setAuthToHeader(token) {
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+}
+
+export function removeAuthFromHeader() {
+  delete axios.defaults.headers.common.Authorization;
 }
 
 export default function request(options) {

@@ -1,14 +1,13 @@
 import {
-  call, put, select, takeLatest
+  call, put, select, takeLatest, all
 } from 'redux-saga/effects';
 
-import request from 'utils/request';
+import request, { setAuthToHeader, removeAuthFromHeader } from 'utils/request';
 import {
   storeUserProfile, storeUserShop, reset as resetGlobalState, storeToken
 } from 'containers/App/actions';
 import { replace } from 'connected-react-router';
 import { getAuthToken, removeAuthToken, saveAuthToken } from 'utils/localStorage';
-import axios from 'axios';
 import { makeSelectToken, makeSelectUserProfile, makeSelectLocation } from 'containers/App/selectors';
 import { loadUserProfile as loadUserProfileAction, loadUserShop as loadUserShopAction, logoutUser as logoutUserAction } from './actions';
 import {
@@ -16,14 +15,16 @@ import {
 } from './constants';
 
 export function* loginUser(action) {
-  saveAuthToken(action.token);
-  yield put(storeToken(action.token));
+  const { token } = action;
+
+  saveAuthToken(token);
+  yield put(storeToken(token));
 }
 
 export function* logoutUser() {
   yield put(resetGlobalState());
   removeAuthToken();
-  delete axios.defaults.headers.common.Authorization;
+  removeAuthFromHeader();
   const currentLocation = yield select(makeSelectLocation());
 
   let newPath;
@@ -47,10 +48,12 @@ export function* checkAuth() {
   if (!token || !userProfile) {
     const tokenFromLocalStorage = getAuthToken();
     if (tokenFromLocalStorage) {
-      axios.defaults.headers.common.Authorization = `Bearer ${tokenFromLocalStorage}`;
-      yield put(storeToken(tokenFromLocalStorage));
-      yield put(loadUserProfileAction());
-      yield put(loadUserShopAction());
+      setAuthToHeader(tokenFromLocalStorage);
+      yield all([
+        put(storeToken(tokenFromLocalStorage)),
+        put(loadUserProfileAction()),
+        put(loadUserShopAction())
+      ]);
     } else {
       yield put(logoutUserAction());
     }
@@ -77,7 +80,11 @@ export function* loadUserShop() {
       method: 'get'
     });
 
-    yield put(storeUserShop(res[0]));
+    if (res.length) {
+      yield put(storeUserShop(res[0]));
+    } else {
+      yield put(storeUserShop(null));
+    }
   } catch (err) {
     yield put(storeUserShop(false));
   }

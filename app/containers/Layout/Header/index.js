@@ -1,4 +1,4 @@
-import { logoutUser } from 'components/RequiredAuth/actions';
+import { logoutUser } from 'hoc/withAuth/actions';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectCurrentModule } from 'containers/App/selectors';

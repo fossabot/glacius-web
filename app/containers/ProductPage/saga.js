@@ -25,10 +25,11 @@ function handleErr(err, action) {
 
 export function* loadProductData() {
   const userShop = yield select(makeSelectUserShop());
+  const { id: shopId } = userShop;
 
   const res = yield call(request, {
     url: '/product',
-    params: { shopId: userShop.id },
+    params: { shopId },
     method: 'GET'
   });
 
@@ -37,12 +38,14 @@ export function* loadProductData() {
 
 export function* createProduct(action) {
   const userShop = yield select(makeSelectUserShop());
+  const { id: shopId } = userShop;
+  const { values } = action;
 
   try {
     const res = yield call(request, {
       url: '/product',
-      params: { shopId: userShop.id },
-      data: pickBy(action.values, identity),
+      params: { shopId },
+      data: pickBy(values, identity),
       method: 'POST'
     });
 
@@ -54,12 +57,13 @@ export function* createProduct(action) {
 
 export function* updateProduct(action) {
   const userShop = yield select(makeSelectUserShop());
+  const { id: shopId } = userShop;
   const { values, productId } = action;
 
   try {
     const res = yield call(request, {
       url: `/product/${productId}`,
-      params: { shopId: userShop.id },
+      params: { shopId },
       data: pickBy(values, identity),
       method: 'PATCH'
     });

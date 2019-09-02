@@ -3,7 +3,7 @@ import injectSaga from 'utils/injectSaga';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectIsReady } from './selectors';
-import RequiredAuth from './RequiredAuth';
+import withAuth from './withAuth';
 import saga from './saga';
 import { checkAuth as checkAuthAction } from './actions';
 
@@ -16,6 +16,6 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
-const withSaga = injectSaga({ key: 'RequiredAuth', saga });
+const withSaga = injectSaga({ key: 'withAuth', saga });
 
-export default (Component, isAuthRequired = true) => compose(withSaga, withConnect)(RequiredAuth(Component, isAuthRequired));
+export default (Component) => compose(withSaga, withConnect, withAuth)(Component);

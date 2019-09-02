@@ -1,25 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import {
-  Button, Card, CardBody, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row, FormFeedback
+  Container, Row, Col, Card, CardBody, InputGroupAddon, InputGroupText, Input, FormFeedback, InputGroup, Button
 } from 'reactstrap';
 import { Formik } from 'formik';
+import PropTypes from 'prop-types';
 import LoginBrand from 'components/LoginBrand';
 
 const propTypes = {
-  login: PropTypes.func,
-  navigateToRegisterPage: PropTypes.func
+  register: PropTypes.func,
+  navigateToLoginPage: PropTypes.func
 };
 
-class LoginPage extends React.PureComponent {
+class RegisterPage extends React.PureComponent {
   render() {
-    const { login, navigateToRegisterPage } = this.props;
+    const { register, navigateToLoginPage } = this.props;
 
     return (
       <>
         <Helmet>
-          <title>Login</title>
+          <title>Register</title>
         </Helmet>
 
         <div className="app flex-row align-items-center">
@@ -30,13 +30,17 @@ class LoginPage extends React.PureComponent {
 
                 <Card className="p-3">
                   <CardBody>
-                    <h1>Login</h1>
-                    <p className="text-muted">Sign In to your account</p>
+                    <h3>Register</h3>
+                    <p className="text-muted">Get started with your account today.</p>
 
                     <Formik
-                      initialValues={{ email: '', password: '' }}
-                      initialStatus={{ email: false, password: false }}
-                      onSubmit={login}
+                      initialValues={{
+                        name: '', email: '', password: '', confirmPassword: ''
+                      }}
+                      initialStatus={{
+                        name: false, email: false, password: false, confirmPassword: false
+                      }}
+                      onSubmit={register}
                       validateOnBlur={false}
                       validateOnChange={false}
                     >
@@ -44,6 +48,26 @@ class LoginPage extends React.PureComponent {
                         values, status, handleChange, handleSubmit, isSubmitting, setStatus
                       }) => (
                         <>
+                          <InputGroup className="mb-3">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="fas fa-user" />
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input
+                              autoFocus
+                              name="name"
+                              placeholder="Name"
+                              autoComplete="name"
+                              value={values.name}
+                              onChange={(evt) => {
+                                setStatus({ ...status, name: false });
+                                handleChange(evt);
+                              }}
+                              invalid={!!status.name}
+                            />
+                            {status.name && <FormFeedback>{status.name}</FormFeedback>}
+                          </InputGroup>
                           <InputGroup className="mb-3">
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
@@ -65,7 +89,7 @@ class LoginPage extends React.PureComponent {
                             />
                             {status.email && <FormFeedback>{status.email}</FormFeedback>}
                           </InputGroup>
-                          <InputGroup className="mb-4">
+                          <InputGroup className="mb-3">
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
                                 <i className="fas fa-lock" />
@@ -80,46 +104,62 @@ class LoginPage extends React.PureComponent {
                                 setStatus({ ...status, password: false });
                                 handleChange(evt);
                               }}
+                              invalid={!!status.password}
+                            />
+                            {status.password && <FormFeedback>{status.password}</FormFeedback>}
+                          </InputGroup>
+                          <InputGroup className="mb-4">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="fas fa-lock" />
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input
+                              type="password"
+                              name="confirmPassword"
+                              placeholder="Confirm Password"
+                              value={values.confirmPassword}
+                              onChange={(evt) => {
+                                setStatus({ ...status, confirmPassword: false });
+                                handleChange(evt);
+                              }}
                               onKeyPress={({ key }) => {
                                 if (key === 'Enter') {
                                   handleSubmit();
                                 }
                               }}
-                              invalid={!!status.password}
+                              invalid={!!status.confirmPassword}
                             />
-                            {status.password && <FormFeedback>{status.password}</FormFeedback>}
+                            {status.confirmPassword && <FormFeedback>{status.confirmPassword}</FormFeedback>}
                           </InputGroup>
                           <Row>
-                            <Col xs={6}>
+                            <Col md={12}>
                               <Button
+                                block
                                 color="primary"
-                                className="px-5"
+                                className="px-4"
                                 onClick={handleSubmit}
                                 disabled={isSubmitting}
                               >
-                                Login
+                                Register
                               </Button>
-                            </Col>
-                            <Col xs={6} className="text-right">
-                              <Button color="link" className="px-0">Forgot password?</Button>
                             </Col>
                           </Row>
                         </>
                       )}
                     </Formik>
-
                   </CardBody>
                 </Card>
 
                 <div className="mt-5 text-muted text-center">
-                  Don&#39;t have an account?
+                  Already have an account?
                   <Button
                     color="link"
                     className="py-0 pl-1"
                     style={{ verticalAlign: 'initial' }}
-                    onClick={navigateToRegisterPage}
+                    onClick={navigateToLoginPage}
                   >
-                    Register
+                    Login
                   </Button>
                 </div>
               </Col>
@@ -131,6 +171,6 @@ class LoginPage extends React.PureComponent {
   }
 }
 
-LoginPage.propTypes = propTypes;
+RegisterPage.propTypes = propTypes;
 
-export default LoginPage;
+export default RegisterPage;

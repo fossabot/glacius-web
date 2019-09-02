@@ -15,7 +15,7 @@ function EmptyState({ navigateToAddProductPage }) {
         <Col md={6} className="mx-auto text-center">
           <i className="empty-product-icon cui-circle-x text-secondary" />
           <div className="font-3xl text-muted pt-3">No Product Found</div>
-          <div className="pt-2">Try to add one product today, it's easy</div>
+          <div className="pt-2">Try to add one product today, it&#39;s easy</div>
           <div className="pt-4">
             <Button color="primary" onClick={navigateToAddProductPage}>Add product</Button>
           </div>

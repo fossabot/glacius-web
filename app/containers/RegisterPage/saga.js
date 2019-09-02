@@ -1,27 +1,22 @@
 import {
-  call, put, select, takeLatest
+  call, put, takeLatest
 } from 'redux-saga/effects';
 import request from 'utils/request';
 import { replace } from 'connected-react-router';
-import { loginUser } from 'hoc/withAuth/actions';
-import { makeSelectLocationQueryString } from 'containers/App/selectors';
-import { forOwn } from 'lodash';
-import { ATTEMPT_LOGIN } from './constants';
+import { forOwn, identity, pickBy } from 'lodash';
+import { REGISTER } from './constants';
 
-export function* attemptLogin(action) {
-  const { email, password } = action.values;
+export function* register(action) {
+  const { values } = action;
 
   try {
     const res = yield call(request, {
-      url: '/user/login',
+      url: '/user/register',
+      data: pickBy(values, identity),
       method: 'POST',
-      data: { email, password }
     });
 
-    yield put(loginUser(res.token));
-
-    const params = yield select(makeSelectLocationQueryString());
-    yield put(replace(params && params.rtn ? params.rtn : '/portal'));
+    yield put(replace('/login'));
   } catch (err) {
     const { setStatus, setSubmitting } = action.formActions;
     setSubmitting(false);
@@ -42,5 +37,5 @@ export function* attemptLogin(action) {
  * Root saga manages watcher lifecycle
  */
 export default function* login() {
-  yield takeLatest(ATTEMPT_LOGIN, attemptLogin);
+  yield takeLatest(REGISTER, register);
 }

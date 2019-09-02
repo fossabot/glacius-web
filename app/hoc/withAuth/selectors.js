@@ -5,7 +5,7 @@ const makeSelectIsReady = () => createSelector(
   makeSelectToken(),
   makeSelectUserProfile(),
   makeSelectUserShop(),
-  (token, userProfile, userShop) => !!token && !!userProfile && !!userShop
+  (token, userProfile, userShop) => !!token && !!userProfile && (!!userShop || userShop === null) // null means shop haven set
 );
 
 export {

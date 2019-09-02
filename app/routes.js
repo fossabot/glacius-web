@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import RequiredAuth from './components/RequiredAuth';
+import { compose } from 'redux';
 import App from './containers/App';
 import DashboardPage from './containers/DashboardPage/Loadable';
 import ProductPage from './containers/ProductPage';
@@ -9,6 +9,9 @@ import Layout from './containers/Layout';
 import LoginPage from './containers/LoginPage/Loadable';
 import NotFoundPage from './containers/NotFoundPage/Loadable';
 import AddEditProduct from './containers/ProductPage/AddEditProduct/Loadable';
+import RegisterPage from './containers/RegisterPage/Loadable';
+import withUserShop from './hoc/withUserShop';
+import withAuth from './hoc/withAuth';
 
 /* eslint-disable react/display-name */
 function redirect(to) {
@@ -21,7 +24,7 @@ const routes = [
     routes: [
       {
         path: '/portal',
-        component: RequiredAuth(Layout),
+        component: compose(withAuth, withUserShop)(Layout),
         routes: [
           { path: '/portal', exact: true, component: redirect('/portal/dashboard') },
           { path: '/portal/dashboard', exact: true, component: DashboardPage },
@@ -38,7 +41,14 @@ const routes = [
           { path: '*', component: NotFoundPage }
         ]
       },
-      { path: '/login', name: 'Login', component: RequiredAuth(LoginPage, false) },
+      {
+        path: '/login',
+        render: (props) => {
+          const WithAuth = withAuth(LoginPage);
+          return <WithAuth {...props} authRequired={false} />;
+        }
+      },
+      { path: '/register', component: RegisterPage },
       { path: '*', component: NotFoundPage }
     ]
   }
