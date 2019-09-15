@@ -19,7 +19,7 @@ function handleErr(err, action) {
     });
     setStatus(errObj);
   } else {
-    setStatus({ productStock: err.msg });
+    setStatus({ generalError: err.msg });
   }
 }
 

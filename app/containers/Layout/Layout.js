@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  AppHeader, AppFooter, AppSidebar, AppSidebarHeader, AppSidebarForm, AppSidebarNav, AppSidebarFooter, AppSidebarMinimizer
+  AppHeader, AppFooter, AppSidebar, AppSidebarHeader, AppSidebarForm, AppSidebarNav, AppSidebarFooter
 } from '@coreui/react';
+import AppSidebarMinimizer from 'components/AppSidebarMinimizer';
 import { Container } from 'reactstrap';
 import * as router from 'react-router-dom'; /* eslint-disable-line import/no-duplicates */
 import { renderRoutes } from 'react-router-config';
+import { getSideBarOpt } from 'utils/localStorage';
 import { navigation } from '../../navigation';
 import Header from './Header';
 import Footer from './Footer';
@@ -15,8 +17,17 @@ const propTypes = {
 };
 
 class Layout extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      sidebarOpt: getSideBarOpt()
+    };
+  }
+
   render() {
     const { route } = this.props;
+    const { sidebarOpt: { isMinimized, isHidden } } = this.state;
 
     return (
       <div className="app">
@@ -24,7 +35,7 @@ class Layout extends React.PureComponent {
           <Header />
         </AppHeader>
         <div className="app-body">
-          <AppSidebar fixed display="lg">
+          <AppSidebar fixed minimized={isMinimized} display={isHidden ? '' : 'lg'}>
             <AppSidebarHeader />
             <AppSidebarForm />
             <AppSidebarNav navConfig={navigation} {...this.props} router={router} />

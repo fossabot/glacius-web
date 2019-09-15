@@ -1,22 +1,20 @@
-import {
-  call, put, takeLatest
-} from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import request from 'utils/request';
-import { replace } from 'connected-react-router';
 import { forOwn, identity, pickBy } from 'lodash';
-import { REGISTER } from './constants';
+import { push } from 'connected-react-router';
+import { CHANGE_PASSWORD } from './constants';
 
-export function* register(action) {
+export function* changePassword(action) {
   const { values } = action;
 
   try {
     const res = yield call(request, {
-      url: '/user/register',
+      url: '/user/password',
       data: pickBy(values, identity),
-      method: 'POST',
+      method: 'PATCH',
     });
 
-    yield put(replace('/login'));
+    yield put(push('/portal/account'));
   } catch (err) {
     const { setStatus, setSubmitting } = action.formActions;
     setSubmitting(false);
@@ -33,9 +31,6 @@ export function* register(action) {
   }
 }
 
-/**
- * Root saga manages watcher lifecycle
- */
-export default function* login() {
-  yield takeLatest(REGISTER, register);
+export default function* () {
+  yield takeLatest(CHANGE_PASSWORD, changePassword);
 }

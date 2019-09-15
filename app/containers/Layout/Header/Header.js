@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppSidebarToggler } from '@coreui/react';
+import AppSidebarToggler from 'components/AppSidebarToggler';
 import {
   Nav, NavItem, NavLink as NormalNavLink, UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem
 } from 'reactstrap';
@@ -12,6 +12,7 @@ import { ConfirmModal } from 'components/Modals';
 
 const propTypes = {
   currentModule: PropTypes.string,
+  navigateToMyAccountPage: PropTypes.func,
   logout: PropTypes.func
 };
 
@@ -30,7 +31,7 @@ class Header extends React.PureComponent {
   };
 
   render() {
-    const { currentModule, logout } = this.props;
+    const { currentModule, navigateToMyAccountPage, logout } = this.props;
     const { logoutModalState } = this.state;
 
     return (
@@ -55,8 +56,7 @@ class Header extends React.PureComponent {
             </DropdownToggle>
             <DropdownMenu right>
               <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
-              <DropdownItem><i className="fa fa-user" /> Profile</DropdownItem>
-              <DropdownItem><i className="fa fa-wrench" /> Settings</DropdownItem>
+              <DropdownItem onClick={navigateToMyAccountPage}><i className="fa fa-user" /> My Account</DropdownItem>
               <DropdownItem onClick={this.toggleLogoutModal}><i className="fa fa-lock" /> Logout</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>

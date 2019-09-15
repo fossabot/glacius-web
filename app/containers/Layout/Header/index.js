@@ -2,6 +2,7 @@ import { logoutUser } from 'hoc/withAuth/actions';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectCurrentModule } from 'containers/App/selectors';
+import { push } from 'connected-react-router';
 import Header from './Header';
 
 const mapStateToProps = createStructuredSelector({
@@ -9,7 +10,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  logout: () => dispatch(logoutUser())
+  logout: () => dispatch(logoutUser()),
+  navigateToMyAccountPage: () => dispatch(push('/portal/account'))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import {
-  Container, Row, Col, Card, CardBody, InputGroupAddon, InputGroupText, Input, FormFeedback, InputGroup, Button
+  Container, Row, Col, Card, CardBody, InputGroupAddon, InputGroupText, Input, FormFeedback, InputGroup, Button, Alert
 } from 'reactstrap';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
@@ -48,6 +48,11 @@ class RegisterPage extends React.PureComponent {
                         values, status, handleChange, handleSubmit, isSubmitting, setStatus
                       }) => (
                         <>
+                          {status.generalError && (
+                            <Alert color="danger">
+                              {status.generalError}
+                            </Alert>
+                          )}
                           <InputGroup className="mb-3">
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
@@ -137,7 +142,6 @@ class RegisterPage extends React.PureComponent {
                               <Button
                                 block
                                 color="primary"
-                                className="px-4"
                                 onClick={handleSubmit}
                                 disabled={isSubmitting}
                               >

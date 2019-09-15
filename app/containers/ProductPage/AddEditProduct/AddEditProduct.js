@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Row, Col, Card, CardTitle, Button, FormGroup, Label, Input, InputGroup, InputGroupText, FormFeedback,
+  Row, Col, Card, CardTitle, Button, FormGroup, Label, Input, InputGroup, InputGroupText, FormFeedback, Alert,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
@@ -150,6 +150,11 @@ class AddEditProduct extends React.PureComponent {
                     </HeaderSection>
 
                     <Card body>
+                      {status.generalError && (
+                        <Alert color="danger">
+                          {status.generalError}
+                        </Alert>
+                      )}
                       <CardTitle tag="h3" className="section-title">Basic Info</CardTitle>
                       <FormGroup>
                         <Label for="productName">Name</Label>
