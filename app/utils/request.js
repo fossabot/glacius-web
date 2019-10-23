@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { store } from 'configureStore';
 import { logoutUser } from 'hoc/withAuth/actions';
+import { setIsEmailVerified } from 'containers/App/actions';
 
 function processResponse(response) {
   return response.data;
@@ -10,7 +11,11 @@ function processError(error) {
   if (error.response) {
     if (error.response.status === 401) {
       if (store.getState().router.location.pathname !== '/login') {
-        store.dispatch(logoutUser());
+        return store.dispatch(logoutUser());
+      }
+    } else if (error.response.status === 403) {
+      if (error.response.data.message === 'your email address is not verified.') {
+        store.dispatch(setIsEmailVerified(false));
       }
     }
     throw error.response.data;

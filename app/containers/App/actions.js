@@ -3,7 +3,8 @@ import {
   STORE_USER_PROFILE,
   STORE_USER_SHOP,
   RESET,
-  SET_MODULE
+  SET_MODULE,
+  SET_IS_EMAIL_VERIFIED, SET_IS_USER_SHOP_LOADING,
 } from './constants';
 
 export function storeToken(token) {
@@ -37,5 +38,12 @@ export function setModule(module) {
   return {
     type: SET_MODULE,
     module
+  };
+}
+
+export function setIsEmailVerified(isEmailVerified) {
+  return {
+    type: SET_IS_EMAIL_VERIFIED,
+    isEmailVerified
   };
 }

@@ -3,8 +3,8 @@
 require('dotenv').config();
 const express = require('express');
 const { resolve } = require('path');
-const https = require('https');
-const fs = require('fs');
+// const https = require('https');
+// const fs = require('fs');
 const logger = require('./util//logger');
 const argv = require('./util/argv');
 const port = require('./util//port');
@@ -27,12 +27,12 @@ const host = customHost || null; // Let http.Server use its default IPv6/4 host
 const prettyHost = customHost || 'localhost';
 
 // Start your app.
-const server = https.createServer({
-  key: fs.readFileSync(process.env.SSL_KEY_PATH),
-  cert: fs.readFileSync(process.env.SSL_CERT_PATH)
-}, app);
+// const server = https.createServer({
+//   key: fs.readFileSync(process.env.SSL_KEY_PATH),
+//   cert: fs.readFileSync(process.env.SSL_CERT_PATH)
+// }, app);
 
-server.listen(port, host, (err) => {
+app.listen(port, host, (err) => {
   if (err) {
     return logger.error(err.message);
   }

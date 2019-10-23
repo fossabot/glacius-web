@@ -1,11 +1,17 @@
 import {
-  STORE_TOKEN, STORE_USER_PROFILE, RESET, SET_MODULE, STORE_USER_SHOP,
+  STORE_TOKEN,
+  STORE_USER_PROFILE,
+  RESET,
+  SET_MODULE,
+  STORE_USER_SHOP,
+  SET_IS_EMAIL_VERIFIED
 } from './constants';
 
 export const initialState = {
   token: false,
   userProfile: false,
   userShop: false,
+  isEmailVerified: true,
   currentModule: ''
 };
 
@@ -22,6 +28,9 @@ function appReducer(state = initialState, action) {
 
     case RESET:
       return { ...state, ...initialState };
+
+    case SET_IS_EMAIL_VERIFIED:
+      return { ...state, isEmailVerified: action.isEmailVerified };
 
     case SET_MODULE:
       return { ...state, currentModule: action.module };

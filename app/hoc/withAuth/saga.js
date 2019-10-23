@@ -22,6 +22,15 @@ export function* loginUser(action) {
 }
 
 export function* logoutUser() {
+  try {
+    yield call(request, {
+      url: '/user/logout',
+      method: 'POST'
+    });
+  } catch (err) {
+    // simply ignore
+  }
+
   yield put(resetGlobalState());
   removeAuthToken();
   removeAuthFromHeader();

@@ -12,14 +12,19 @@ function handleErr(err, action) {
   const { setStatus, setSubmitting } = action.formActions;
   setSubmitting(false);
 
-  if (err.status === 422) {
+  if (err.status_code === 422) {
     const errObj = {};
-    forOwn(err.msg, (value, key) => {
-      errObj[key] = value.msg;
+    forOwn(err.errors, ([value], key) => {
+      if (key.includes('.')) {
+        const splittedKey = key.split('.');
+        errObj[splittedKey[splittedKey.length - 1]] = value;
+      } else {
+        errObj[key] = value;
+      }
     });
     setStatus(errObj);
   } else {
-    setStatus({ generalError: err.msg });
+    setStatus({ generalError: err.message });
   }
 }
 
@@ -29,7 +34,7 @@ export function* loadProductData() {
 
   const res = yield call(request, {
     url: '/product',
-    params: { shopId },
+    params: { shop_id: shopId },
     method: 'GET'
   });
 
@@ -44,7 +49,7 @@ export function* createProduct(action) {
   try {
     const res = yield call(request, {
       url: '/product',
-      params: { shopId },
+      params: { shop_id: shopId },
       data: pickBy(values, identity),
       method: 'POST'
     });
@@ -63,7 +68,7 @@ export function* updateProduct(action) {
   try {
     const res = yield call(request, {
       url: `/product/${productId}`,
-      params: { shopId },
+      params: { shop_id: shopId },
       data: pickBy(values, identity),
       method: 'PATCH'
     });

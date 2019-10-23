@@ -1,13 +1,13 @@
-import { STORE_CONNECTION_DATA } from './constants';
+import { STORE_CUSTOMER_DATA } from './constants';
 
 export const initialState = {
-  connectionData: []
+  customerData: []
 };
 
 function appReducer(state = initialState, action) {
   switch (action.type) {
-    case STORE_CONNECTION_DATA:
-      return { ...state, connectionData: action.connectionData };
+    case STORE_CUSTOMER_DATA:
+      return { ...state, customerData: action.customerData };
 
     default:
       return state;

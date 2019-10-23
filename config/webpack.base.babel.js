@@ -67,13 +67,16 @@ module.exports = (options) => ({
     // drop any unreachable code.
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.SERVER_BASE_URL': JSON.stringify(process.env.SERVER_BASE_URL)
+      'process.env.SERVER_BASE_URL': JSON.stringify(process.env.SERVER_BASE_URL),
+      'process.env.PUSHER_APP_KEY': JSON.stringify(process.env.PUSHER_APP_KEY),
+      'process.env.PUSHER_APP_CLUSTER': JSON.stringify(process.env.PUSHER_APP_CLUSTER),
     })
   ]),
   resolve: {
+    alias: { moment$: path.resolve(process.cwd(), 'node_modules/moment/moment.js') },
     modules: ['app', 'node_modules'],
     extensions: ['.js', '.jsx', '.scss', '.react.js'],
-    mainFields: ['browser', 'jsnext:main', 'main']
+    mainFields: ['browser', 'main']
   },
   devtool: options.devtool,
   target: 'web', // Make web variables accessible to webpack, e.g. window

@@ -6,6 +6,8 @@ import {
 } from 'reactstrap';
 import { Formik } from 'formik';
 import LoginBrand from 'components/LoginBrand';
+import ButtonLoginWithGoogle from 'components/ButtonLoginWithGoogle';
+import ButtonLoginWithFacebook from 'components/ButtonLoginWithFacebook';
 
 const propTypes = {
   login: PropTypes.func,
@@ -92,7 +94,7 @@ class LoginPage extends React.PureComponent {
                           <Row>
                             <Col xs={6}>
                               <Button
-                                color="primary"
+                                color="success"
                                 className="px-5"
                                 onClick={handleSubmit}
                                 disabled={isSubmitting}
@@ -102,6 +104,17 @@ class LoginPage extends React.PureComponent {
                             </Col>
                             <Col xs={6} className="text-right">
                               <Button color="link" className="px-0">Forgot password?</Button>
+                            </Col>
+                          </Row>
+                          <div className="mt-4 text-muted text-center">
+                            or login with
+                          </div>
+                          <Row>
+                            <Col xs={6}>
+                              <ButtonLoginWithFacebook />
+                            </Col>
+                            <Col xs={6}>
+                              <ButtonLoginWithGoogle />
                             </Col>
                           </Row>
                         </>

@@ -25,8 +25,8 @@ class SetupShop extends React.PureComponent {
                 <h5 className="mb-4">Setup your new shop</h5>
 
                 <Formik
-                  initialValues={{ shopName: '', shopDesc: '' }}
-                  initialStatus={{ shopName: false, shopDesc: false }}
+                  initialValues={{ name: '', description: '' }}
+                  initialStatus={{ name: false, description: false }}
                   onSubmit={createShop}
                   validateOnBlur={false}
                   validateOnChange={false}
@@ -41,34 +41,34 @@ class SetupShop extends React.PureComponent {
                   }) => (
                     <>
                       <FormGroup>
-                        <Label for="shopName">Shop Name</Label>
+                        <Label for="name">Shop Name</Label>
                         <Input
                           type="string"
-                          name="shopName"
+                          name="name"
                           placeholder="Your new shop name"
-                          value={values.shopName}
+                          value={values.name}
                           onChange={(evt) => {
-                            setStatus({ ...status, shopName: false });
+                            setStatus({ ...status, name: false });
                             handleChange(evt);
                           }}
-                          invalid={!!status.shopName}
+                          invalid={!!status.name}
                         />
-                        {status.shopName && <FormFeedback>{status.shopName}</FormFeedback>}
+                        {status.name && <FormFeedback>{status.name}</FormFeedback>}
                       </FormGroup>
                       <FormGroup className="mb-4">
-                        <Label for="shopDesc">Description</Label>
+                        <Label for="description">Description</Label>
                         <Input
                           type="textarea"
-                          name="shopDesc"
+                          name="description"
                           placeholder="A wallet shop"
-                          value={values.shopDesc}
+                          value={values.description}
                           onChange={(evt) => {
-                            setStatus({ ...status, shopDesc: false });
+                            setStatus({ ...status, description: false });
                             handleChange(evt);
                           }}
-                          invalid={!!status.shopDesc}
+                          invalid={!!status.description}
                         />
-                        {status.shopDesc && <FormFeedback>{status.shopDesc}</FormFeedback>}
+                        {status.description && <FormFeedback>{status.description}</FormFeedback>}
                       </FormGroup>
                       <div className="text-center">
                         <Button

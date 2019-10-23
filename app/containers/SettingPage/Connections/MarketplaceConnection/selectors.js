@@ -4,7 +4,7 @@ const selectMarketplaceConnection = (state) => state.marketplaceConnection;
 
 const makeSelectMarketplaceConnectionData = () => createSelector(
   selectMarketplaceConnection,
-  (marketplaceConnectionState) => marketplaceConnectionState.connectionData
+  (marketplaceConnectionState) => marketplaceConnectionState.marketplaceData
 );
 
 const makeSelectMarketplace = (marketplace) => createSelector(
@@ -17,13 +17,25 @@ const makeSelectShopify = () => createSelector(
   (isShopifyConnected) => isShopifyConnected
 );
 
+const makeSelectEasystore = () => createSelector(
+  makeSelectMarketplace('easystore'),
+  (isEasystoreConnected) => isEasystoreConnected
+);
+
 const makeSelectShopee = () => createSelector(
   makeSelectMarketplace('shopee'),
   (isShopeeConnected) => isShopeeConnected
 );
 
+const makeSelectWoocommerce = () => createSelector(
+  makeSelectMarketplace('woocommerce'),
+  (isWooCommerceConnected) => isWooCommerceConnected
+);
+
 export {
   makeSelectMarketplaceConnectionData,
   makeSelectShopify,
-  makeSelectShopee
+  makeSelectEasystore,
+  makeSelectShopee,
+  makeSelectWoocommerce
 };

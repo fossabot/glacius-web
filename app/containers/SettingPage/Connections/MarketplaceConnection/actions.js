@@ -1,17 +1,17 @@
 import {
-  LOAD_CONNECTION, STORE_CONNECTION_DATA, CONNECT, DISCONNECT
+  LOAD_MARKETPLACE, STORE_MARKETPLACE_DATA, CONNECT, DISCONNECT
 } from './constants';
 
-export function loadConnection() {
+export function loadMarketplace() {
   return {
-    type: LOAD_CONNECTION
+    type: LOAD_MARKETPLACE
   };
 }
 
-export function storeConnectionData(connectionData) {
+export function storeMarketplaceData(marketplaceData) {
   return {
-    type: STORE_CONNECTION_DATA,
-    connectionData
+    type: STORE_MARKETPLACE_DATA,
+    marketplaceData
   };
 }
 

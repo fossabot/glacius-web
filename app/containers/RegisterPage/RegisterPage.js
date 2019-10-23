@@ -35,10 +35,10 @@ class RegisterPage extends React.PureComponent {
 
                     <Formik
                       initialValues={{
-                        name: '', email: '', password: '', confirmPassword: ''
+                        name: '', email: '', password: '', confirm_password: ''
                       }}
                       initialStatus={{
-                        name: false, email: false, password: false, confirmPassword: false
+                        name: false, email: false, password: false, confirm_password: false
                       }}
                       onSubmit={register}
                       validateOnBlur={false}
@@ -121,11 +121,11 @@ class RegisterPage extends React.PureComponent {
                             </InputGroupAddon>
                             <Input
                               type="password"
-                              name="confirmPassword"
+                              name="confirm_password"
                               placeholder="Confirm Password"
-                              value={values.confirmPassword}
+                              value={values.confirm_password}
                               onChange={(evt) => {
-                                setStatus({ ...status, confirmPassword: false });
+                                setStatus({ ...status, confirm_password: false });
                                 handleChange(evt);
                               }}
                               onKeyPress={({ key }) => {
@@ -133,9 +133,9 @@ class RegisterPage extends React.PureComponent {
                                   handleSubmit();
                                 }
                               }}
-                              invalid={!!status.confirmPassword}
+                              invalid={!!status.confirm_password}
                             />
-                            {status.confirmPassword && <FormFeedback>{status.confirmPassword}</FormFeedback>}
+                            {status.confirm_password && <FormFeedback>{status.confirm_password}</FormFeedback>}
                           </InputGroup>
                           <Row>
                             <Col md={12}>

@@ -37,9 +37,19 @@ const makeSelectUserShop = () => createSelector(
   (globalState) => globalState.userShop
 );
 
+const makeSelectIsUserShopLoading = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState.isUserShopLoading
+);
+
 const makeSelectCurrentModule = () => createSelector(
   selectGlobal,
   (globalState) => globalState.currentModule
+);
+
+const makeSelectIsEmailVerified = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState.isEmailVerified
 );
 
 export {
@@ -48,5 +58,7 @@ export {
   makeSelectToken,
   makeSelectUserProfile,
   makeSelectUserShop,
-  makeSelectCurrentModule
+  makeSelectIsUserShopLoading,
+  makeSelectCurrentModule,
+  makeSelectIsEmailVerified,
 };

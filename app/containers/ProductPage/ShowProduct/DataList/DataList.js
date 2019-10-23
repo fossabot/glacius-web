@@ -10,8 +10,8 @@ const propTypes = {
 
 const columns = [
   { dataField: 'id', text: 'ID', sort: true },
-  { dataField: 'productName', text: 'Name', sort: true },
-  { dataField: 'productPrice', text: 'Price', sort: true },
+  { dataField: 'name', text: 'Name', sort: true },
+  { dataField: 'product_variants[0].price', text: 'Price', sort: true },
 ];
 
 class DataList extends React.PureComponent {

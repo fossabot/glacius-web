@@ -1,11 +1,14 @@
 import { createSelector } from 'reselect';
-import { makeSelectToken, makeSelectUserProfile, makeSelectUserShop } from 'containers/App/selectors';
+import {
+  makeSelectToken, makeSelectUserProfile, makeSelectUserShop, makeSelectIsEmailVerified
+} from 'containers/App/selectors';
 
 const makeSelectIsReady = () => createSelector(
   makeSelectToken(),
   makeSelectUserProfile(),
   makeSelectUserShop(),
-  (token, userProfile, userShop) => !!token && !!userProfile && (!!userShop || userShop === null) // null means shop haven set
+  makeSelectIsEmailVerified(),
+  (token, userProfile, userShop, isEmailVerified) => !!token && !!userProfile && (!isEmailVerified || (!!userShop || userShop === null)) // null means shop haven set
 );
 
 export {

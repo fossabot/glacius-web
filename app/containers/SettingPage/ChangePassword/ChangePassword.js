@@ -26,8 +26,8 @@ class ChangePassword extends React.PureComponent {
             />
 
             <Formik
-              initialValues={{ oldPassword: '', password: '', confirmPassword: '' }}
-              initialStatus={{ oldPassword: false, password: false, confirmPassword: false }}
+              initialValues={{ old_password: '', password: '', confirm_password: '' }}
+              initialStatus={{ old_password: false, password: false, confirm_password: false }}
               onSubmit={changePassword}
               validateOnBlur={false}
               validateOnChange={false}
@@ -43,21 +43,21 @@ class ChangePassword extends React.PureComponent {
                       </Alert>
                     )}
                     <FormGroup>
-                      <Label for="oldPassword">Current Password</Label>
+                      <Label for="old_password">Current Password</Label>
                       <Input
                         type="password"
-                        name="oldPassword"
-                        value={values.oldPassword}
+                        name="old_password"
+                        value={values.old_password}
                         onChange={(evt) => {
-                          setStatus({ ...status, oldPassword: false });
+                          setStatus({ ...status, old_password: false });
                           handleChange(evt);
                         }}
-                        invalid={!!status.oldPassword}
+                        invalid={!!status.old_password}
                       />
                       <FormText color="muted">
                           Enter the password you currently use to login.
                       </FormText>
-                      {status.oldPassword && <FormFeedback>{status.oldPassword}</FormFeedback>}
+                      {status.old_password && <FormFeedback>{status.old_password}</FormFeedback>}
                     </FormGroup>
                     <FormGroup>
                       <Label for="password">New Password</Label>
@@ -77,13 +77,13 @@ class ChangePassword extends React.PureComponent {
                       {status.password && <FormFeedback>{status.password}</FormFeedback>}
                     </FormGroup>
                     <FormGroup className="mb-4">
-                      <Label for="confirmPassword">Confirm New Password</Label>
+                      <Label for="confirm_password">Confirm New Password</Label>
                       <Input
                         type="password"
-                        name="confirmPassword"
-                        value={values.confirmPassword}
+                        name="confirm_password"
+                        value={values.confirm_password}
                         onChange={(evt) => {
-                          setStatus({ ...status, confirmPassword: false });
+                          setStatus({ ...status, confirm_password: false });
                           handleChange(evt);
                         }}
                         onKeyPress={({ key }) => {
@@ -91,12 +91,12 @@ class ChangePassword extends React.PureComponent {
                             handleSubmit();
                           }
                         }}
-                        invalid={!!status.confirmPassword}
+                        invalid={!!status.confirm_password}
                       />
                       <FormText color="muted">
                           Enter your new password again.
                       </FormText>
-                      {status.confirmPassword && <FormFeedback>{status.confirmPassword}</FormFeedback>}
+                      {status.confirm_password && <FormFeedback>{status.confirm_password}</FormFeedback>}
                     </FormGroup>
                     <Row>
                       <Col md={6}>

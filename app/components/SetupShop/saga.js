@@ -21,14 +21,14 @@ export function* createShop(action) {
     const { setStatus, setSubmitting } = action.formActions;
     setSubmitting(false);
 
-    if (err.status === 422) {
+    if (err.status_code === 422) {
       const errObj = {};
-      forOwn(err.msg, (value, key) => {
-        errObj[key] = value.msg;
+      forOwn(err.errors, ([value], key) => {
+        errObj[key] = value;
       });
       setStatus(errObj);
     } else {
-      setStatus({ shopDesc: err.msg });
+      setStatus({ description: err.message });
     }
   }
 }

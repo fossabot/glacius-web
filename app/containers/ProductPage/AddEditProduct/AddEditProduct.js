@@ -1,15 +1,27 @@
 import React from 'react';
 import {
-  Row, Col, Card, CardTitle, Button, FormGroup, Label, Input, InputGroup, InputGroupText, FormFeedback, Alert,
+  Alert,
+  Button,
+  Card,
+  CardTitle,
+  Col,
+  FormFeedback,
+  FormGroup,
+  Input,
+  InputGroup,
+  InputGroupText,
+  Label,
+  Row,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import './style.scss';
 import { ConfirmModal } from 'components/Modals';
 import HeaderSection from 'components/HeaderSection';
-import { isEqual, pick, forIn } from 'lodash';
+import { forIn, isEqual, pick } from 'lodash';
 import { StickyContainer } from 'react-sticky';
 import request from 'utils/request';
+import ProductImage from './ProductImage';
 
 const propTypes = {
   mode: PropTypes.oneOf(['Add', 'Edit']),
@@ -17,17 +29,24 @@ const propTypes = {
   createProduct: PropTypes.func,
   updateProduct: PropTypes.func,
   match: PropTypes.object,
-  userShop: PropTypes.object
+  userShop: PropTypes.object,
 };
 
 class AddEditProduct extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      loadImageNow: false,
       discardModalState: false,
       initialState: {
-        productName: '', productDesc: '', productPrice: '', productStock: ''
-      }
+        name: '',
+        description: '',
+        images: [],
+        product_variants: [{
+          price: '',
+          stock: '',
+        }],
+      },
     };
   }
 
@@ -41,7 +60,7 @@ class AddEditProduct extends React.PureComponent {
 
   toggleDiscardModal = () => {
     this.setState((prevState) => ({
-      discardModalState: !prevState.discardModalState
+      discardModalState: !prevState.discardModalState,
     }));
   };
 
@@ -57,7 +76,7 @@ class AddEditProduct extends React.PureComponent {
 
   handleSubmit = (values, formActions) => {
     const {
-      mode, createProduct, updateProduct, match
+      mode, createProduct, updateProduct, match,
     } = this.props;
 
     if (mode === 'Add') {
@@ -77,30 +96,46 @@ class AddEditProduct extends React.PureComponent {
     return mode === 'Add' ? 'Create' : 'Update';
   };
 
-  async loadProduct() {
+  loadProduct = async () => {
     const { match, userShop } = this.props;
 
     const res = await request({
       url: `/product/${match.params.id}`,
-      params: { shopId: userShop.id },
-      method: 'GET'
+      params: { shop_id: userShop.id },
+      method: 'GET',
     });
 
-    const data = pick(res, ['productName', 'productDesc', 'productPrice', 'productStock']);
+    const data = pick(res, ['name', 'description', 'images']);
+    const variantsData = res.product_variants;
+
     const transformedData = forIn(data, (value, key) => {
       if (value === null) {
         data[key] = '';
       }
     });
 
-    this.setState({
-      initialState: transformedData
+    variantsData.forEach((value, key) => {
+      variantsData[key] = forIn(value, (variantsValue, variantsKey) => {
+        if (variantsValue === null) {
+          value[variantsKey] = '';
+        }
+      });
     });
-  }
+
+    transformedData.product_variants = variantsData;
+
+    this.setState({
+      initialState: transformedData,
+    });
+
+    this.setState({
+      loadImageNow: true
+    });
+  };
 
   render() {
     const { mode, navigateToProductPage } = this.props;
-    const { discardModalState, initialState } = this.state;
+    const { loadImageNow, discardModalState, initialState } = this.state;
 
     return (
       <>
@@ -111,7 +146,10 @@ class AddEditProduct extends React.PureComponent {
                 enableReinitialize
                 initialValues={initialState}
                 initialStatus={{
-                  productName: false, productDesc: false, productPrice: false, productStock: false
+                  name: false,
+                  description: false,
+                  price: false,
+                  stock: false,
                 }}
                 onSubmit={this.handleSubmit}
                 validateOnBlur={false}
@@ -124,7 +162,8 @@ class AddEditProduct extends React.PureComponent {
                   handleSubmit,
                   isSubmitting,
                   setStatus,
-                  initialValues
+                  setValues,
+                  initialValues,
                 }) => (
                   <>
                     <HeaderSection
@@ -157,54 +196,76 @@ class AddEditProduct extends React.PureComponent {
                       )}
                       <CardTitle tag="h3" className="section-title">Basic Info</CardTitle>
                       <FormGroup>
-                        <Label for="productName">Name</Label>
+                        <Label for="name">Name</Label>
                         <Input
                           type="string"
-                          name="productName"
+                          name="name"
                           placeholder="Brand New Wallet"
-                          value={values.productName}
+                          value={values.name}
                           onChange={(evt) => {
-                            setStatus({ ...status, productName: false });
+                            setStatus({
+                              ...status,
+                              name: false,
+                            });
                             handleChange(evt);
                           }}
-                          invalid={!!status.productName}
+                          invalid={!!status.name}
                         />
-                        {status.productName && <FormFeedback>{status.productName}</FormFeedback>}
+                        {status.name && <FormFeedback>{status.name}</FormFeedback>}
                       </FormGroup>
                       <FormGroup className="mb-1">
-                        <Label for="productDesc">Description</Label>
+                        <Label for="description">Description</Label>
                         <Input
                           type="textarea"
-                          name="productDesc"
-                          value={values.productDesc}
+                          name="description"
+                          value={values.description}
                           onChange={(evt) => {
-                            setStatus({ ...status, productDesc: false });
+                            setStatus({
+                              ...status,
+                              description: false,
+                            });
                             handleChange(evt);
                           }}
-                          invalid={!!status.productDesc}
+                          invalid={!!status.description}
                         />
-                        {status.productDesc && <FormFeedback>{status.productDesc}</FormFeedback>}
+                        {status.description && <FormFeedback>{status.description}</FormFeedback>}
                       </FormGroup>
+                    </Card>
+                    <Card body>
+                      <CardTitle tag="h3" className="section-title">Image</CardTitle>
+                      <ProductImage
+                        shoudLoadImage={loadImageNow}
+                        images={values.images}
+                        onChange={(newImages) => {
+                          setValues({
+                            ...values,
+                            images: newImages
+                          });
+                        }}
+                      />
                     </Card>
                     <Card body>
                       <CardTitle tag="h3" className="section-title">Pricing</CardTitle>
                       <FormGroup>
-                        <Label for="productPrice">Product Price</Label>
+                        <Label for="price">Product Price</Label>
                         <InputGroup>
                           <div className="input-prepend input-group">
                             <InputGroupText>RM</InputGroupText>
                             <Input
                               type="text"
-                              name="productPrice"
+                              name="product_variants[0].price"
                               placeholder="0.00"
-                              value={values.productPrice}
+                              value={values.product_variants[0].price}
                               onChange={(evt) => {
-                                setStatus({ ...status, productPrice: false });
+                                setStatus({
+                                  ...status,
+                                  price: false,
+                                });
                                 handleChange(evt);
                               }}
-                              invalid={!!status.productPrice}
+                              invalid={!!status.price}
                             />
-                            {status.productPrice && <FormFeedback>{status.productPrice}</FormFeedback>}
+                            {status.price && <FormFeedback>{status.price}</FormFeedback>}
                           </div>
                         </InputGroup>
                       </FormGroup>
@@ -212,19 +273,22 @@ class AddEditProduct extends React.PureComponent {
                     <Card body>
                       <CardTitle tag="h3" className="section-title">Inventory</CardTitle>
                       <FormGroup>
-                        <Label for="productStock">Stock</Label>
+                        <Label for="stock">Stock</Label>
                         <Input
                           type="text"
-                          name="productStock"
+                          name="product_variants[0].stock"
                           placeholder="0"
-                          value={values.productStock}
+                          value={values.product_variants[0].stock}
                           onChange={(evt) => {
-                            setStatus({ ...status, productStock: false });
+                            setStatus({
+                              ...status,
+                              stock: false,
+                            });
                             handleChange(evt);
                           }}
-                          invalid={!!status.productStock}
+                          invalid={!!status.stock}
                         />
-                        {status.productStock && <FormFeedback>{status.productStock}</FormFeedback>}
+                        {status.stock && <FormFeedback>{status.stock}</FormFeedback>}
                       </FormGroup>
                     </Card>
                   </>

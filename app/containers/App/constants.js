@@ -3,3 +3,4 @@ export const STORE_USER_PROFILE = 'glacius/App/STORE_USER_PROFILE';
 export const STORE_USER_SHOP = 'glacius/App/STORE_USER_SHOP';
 export const RESET = 'glacius/App/RESET';
 export const SET_MODULE = 'glacius/App/SET_MODULE';
+export const SET_IS_EMAIL_VERIFIED = 'glacius/App/SET_IS_EMAIL_VERIFIED';

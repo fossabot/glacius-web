@@ -1,0 +1,14 @@
+.btn-facebook-login {
+  &.btn{
+    margin: 10px 0;
+    font-size: 15px;
+    text-align: left;
+    line-height: 24px;
+
+    & i {
+      float:left;
+      margin: 4px 15px 0 5px;
+      min-width: 15px;
+    }
+  }
+}
